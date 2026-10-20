@@ -1,8 +1,9 @@
-
+from fighter import Fighter
 # ============================================================
 # base class
 
-class Warrior:
+
+class Warrior(Fighter):
     def __init__(self, health=50, attack=5):
         self.health = health
         self.attack = attack
@@ -10,6 +11,10 @@ class Warrior:
     @property
     def is_alive(self):
         return self.health > 0
+
+    @property
+    def current_health(self) -> int:
+        return self.health
 
     @property
     def name(self):
@@ -43,7 +48,7 @@ class Warrior:
         return self
 
     def __str__(self):
-        return f"{self.__class__.__name__}, Health: {self.health}, Attack:{self.attack} | "
+        return f"{self.__class__.__name__}, Health: {self.health}, Attack:{self.attack}"
 
 # ============================================================
 
@@ -146,6 +151,6 @@ class Dwarf(Warrior):
         return 0
 
     def __str__(self):
-        return f"{super().__str__()}, Defense: {self.stealth}"
+        return f"{super().__str__()}, Defense: {self.defense}"
 
 # ============================================================

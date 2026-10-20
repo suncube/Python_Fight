@@ -1,9 +1,7 @@
-# from warriors import Warrior, Elf, Ork, Dragon, Hobbit, Dwarf
-import warriors
-##############################################
+from fighter import Fighter
 
 
-class Army:  # todo to interface
+class Army(Fighter):
     def __init__(self):
         self._warriors = []
         pass
@@ -23,10 +21,10 @@ class Army:  # todo to interface
         return None
 
     @property
-    def health(self):
+    def current_health(self):
         warrior = self.first_alive
         if warrior is not None:
-            return warrior.health
+            return warrior.current_health
         return 0
 
     @property
@@ -47,7 +45,7 @@ class Army:  # todo to interface
             return warrior.do_fight(enemy)
         return 0
 
-    def get_attack(self):
+    def get_attack_damage(self):
         warrior = self.first_alive
         if warrior is not None:
             return warrior.get_attack_damage()
@@ -83,17 +81,17 @@ class Battle:
     def __init__(self):
         pass
 
-    def fight(self, fighter1: (warriors.Warrior, Army), fighter2: (warriors.Warrior, Army)) -> bool:
+    def fight(self, fighter1: (Fighter), fighter2: (Fighter)) -> bool:
         is_first_attack = True
         counter = 1
         self.log_head()
         while fighter1.is_alive and fighter2.is_alive:
             if is_first_attack:
                 damage = fighter1.do_fight(fighter2)
-                self.log_attack(counter, fighter1.name, damage, fighter1.health, fighter2.health)
+                self.log_attack(counter, fighter1.name, damage, fighter1.current_health, fighter2.current_health)
             else:
                 damage = fighter2.do_fight(fighter1)
-                self.log_attack(counter, fighter2.name, damage, fighter1.health, fighter2.health)
+                self.log_attack(counter, fighter2.name, damage, fighter1.current_health, fighter2.current_health)
                 counter += 1
                 # print("-"*50)
 
@@ -107,42 +105,18 @@ class Battle:
     def log_attack(self, counter, fighter_name, fighter_atk, health_first, health_second):
         print(f"{counter:4} {fighter_name:10} {fighter_atk:5} {health_first:5} {health_second:5}")
 
-# one to one test
-    def fight_one_to_one(self, first, second):
-        attacker, defender = first, second
-        self.log_head()
-        counter = 1
-        while True:
-            damage = attacker.do_fight(defender)
-            self.log_attack(counter, attacker.name, damage, first.health, second.health)
+# # one to one test
+#     def fight_one_to_one(self, first, second):
+#         attacker, defender = first, second
+#         self.log_head()
+#         counter = 1
+#         while True:
+#             damage = attacker.do_fight(defender)
+#             self.log_attack(counter, attacker.name, damage, first.health, second.health)
 
-            if not defender.is_alive:
-                return attacker is first
-            attacker, defender = defender, attacker
-            if attacker == first:
-                counter += 1
-                # print("-"*50)
-
-# # test
-
-
-elf = warriors.Elf()
-print(elf)
-
-orc = warriors.Orc()
-print(orc)
-
-battle = Battle()
-
-print(battle.fight_one_to_one(elf, orc))
-
-# #
-print()
-army1 = Army()
-army1.add_members(warriors.Elf, 1)
-army2 = Army()
-army2.add_members(warriors.Orc, 1)
-
-battle_army = Battle()
-result = battle_army.fight(army1, army2)
-print(result)
+#             if not defender.is_alive:
+#                 return attacker is first
+#             attacker, defender = defender, attacker
+#             if attacker == first:
+#                 counter += 1
+#                 # print("-"*50)
