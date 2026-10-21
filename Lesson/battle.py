@@ -8,7 +8,8 @@ class Army(Fighter):
 
     @property
     def is_can_multi_attack(self) -> bool:
-        return False
+        warrior = self.first_alive
+        return warrior is not None and warrior.is_can_multi_attack
 
     @property
     def name(self):
@@ -73,6 +74,7 @@ class Army(Fighter):
         warrior = self.first_alive
         if warrior is not None:
             return warrior.set_damage(damage)
+        return 0
 
     def __add__(self, n):
         for w in self._warriors:
@@ -99,7 +101,7 @@ class Battle:
     def __init__(self):
         pass
 
-    def fight(self, fighter1: (Fighter), fighter2: (Fighter)) -> bool:
+    def fight(self, fighter1: Fighter, fighter2: Fighter) -> bool:
         is_first_attack = True
         counter = 1
         self.log_head()

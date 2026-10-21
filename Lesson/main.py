@@ -47,3 +47,8 @@ battle_army = Battle()
 result = battle_army.fight(a3, a4)
 
 print("Win Army 3" if result else "Win Army 4")
+# # -----------------
+# dragon = Dragon()
+# orc = Orc(1000, 3, 2)
+# battle = Battle()
+# print(battle.fight(dragon, orc))

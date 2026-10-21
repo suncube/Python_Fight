@@ -19,9 +19,8 @@ class Fighter(ABC):
         pass
 
     @property
-    @abstractmethod
     def is_can_multi_attack(self) -> bool:
-        pass
+        return False
 
     @abstractmethod
     def get_attack_damage(self) -> int:
@@ -32,7 +31,7 @@ class Fighter(ABC):
         pass
 
     @abstractmethod
-    def do_fight(self, enemy: "Fighter") -> int:
+    def do_fight(self, enemy: "Fighter", next_target: "Fighter | None" = None) -> int:
         pass
 
     @abstractmethod

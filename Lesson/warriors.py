@@ -116,13 +116,13 @@ class Dragon(Warrior):
 
     def do_fight(self, enemy, next_target=None):
         total = self.get_attack_damage()
-        enemy.set_damage(total)
+        damage = enemy.set_damage(total)
 
         if next_target is not None and next_target.is_alive:
             # total += self.fire_damage
             next_target.set_damage(self.fire_damage)
 
-        return total
+        return damage
 
     def __str__(self):
         return f"{super().__str__()}, Fire Damage: {self.fire_damage}"
