@@ -9,7 +9,11 @@ class Warrior(Fighter):
         self.attack = attack
 
     @property
-    def is_alive(self):
+    def is_can_multi_attack(self) -> bool:
+        return False
+
+    @property
+    def is_alive(self) -> bool:
         return self.health > 0
 
     @property
@@ -17,11 +21,11 @@ class Warrior(Fighter):
         return self.health
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__class__.__name__
 
     @property
-    def atk(self):
+    def atk(self) -> int:
         return self.get_attack_damage()
 
 # battle func
@@ -103,13 +107,21 @@ class Dragon(Warrior):
         super().__init__(health, attack)
         self.fire_damage = fire_damage
 
+    @property
+    def is_can_multi_attack(self) -> bool:
+        return True
+
+    def get_attack_damage(self):
+        return self.attack + self.fire_damage
+
     def do_fight(self, enemy, next_target=None):
-        total = self.attack + self.fire_damage
-        enemy.take_damage(total)
-        # ????
+        total = self.get_attack_damage()
+        enemy.set_damage(total)
+
         if next_target is not None and next_target.is_alive:
-            next_target.take_damage(self.fire_damage)
-        # ??
+            # total += self.fire_damage
+            next_target.set_damage(self.fire_damage)
+
         return total
 
     def __str__(self):

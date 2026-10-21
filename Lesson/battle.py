@@ -7,6 +7,10 @@ class Army(Fighter):
         pass
 
     @property
+    def is_can_multi_attack(self) -> bool:
+        return False
+
+    @property
     def name(self):
         warrior = self.first_alive
         if warrior is not None:
@@ -18,6 +22,17 @@ class Army(Fighter):
         for unit in self._warriors:
             if unit.is_alive:
                 return unit
+        return None
+
+    @property
+    def next_alive_after(self):
+        is_first_find = False
+        for unit in self._warriors:
+            if unit.is_alive:
+                if is_first_find:
+                    return unit
+                else:
+                    is_first_find = True
         return None
 
     @property
@@ -42,6 +57,9 @@ class Army(Fighter):
     def do_fight(self, enemy):
         warrior = self.first_alive
         if warrior is not None:
+            if warrior.is_can_multi_attack:
+                return warrior.do_fight(enemy, enemy.next_alive_after)
+
             return warrior.do_fight(enemy)
         return 0
 
@@ -57,23 +75,23 @@ class Army(Fighter):
             return warrior.set_damage(damage)
 
     def __add__(self, n):
-        for w in self.warriors:
+        for w in self._warriors:
             w.attack += n
         return self
 
     def __mul__(self, n):
-        for w in self.warriors:
+        for w in self._warriors:
             w.attack *= n
         return self
 
     def __len__(self):
-        return len(self.warriors)
+        return len(self._warriors)
 
     def __iter__(self):
-        return iter(self.warriors)
+        return iter(self._warriors)
 
     def __str__(self):
-        return "\n".join(str(w) for w in self.warriors) or "<empty army>"
+        return "\n".join(str(w) for w in self._warriors) or "<empty army>"
 
 
 class Battle:
@@ -104,19 +122,3 @@ class Battle:
 
     def log_attack(self, counter, fighter_name, fighter_atk, health_first, health_second):
         print(f"{counter:4} {fighter_name:10} {fighter_atk:5} {health_first:5} {health_second:5}")
-
-# # one to one test
-#     def fight_one_to_one(self, first, second):
-#         attacker, defender = first, second
-#         self.log_head()
-#         counter = 1
-#         while True:
-#             damage = attacker.do_fight(defender)
-#             self.log_attack(counter, attacker.name, damage, first.health, second.health)
-
-#             if not defender.is_alive:
-#                 return attacker is first
-#             attacker, defender = defender, attacker
-#             if attacker == first:
-#                 counter += 1
-#                 # print("-"*50)

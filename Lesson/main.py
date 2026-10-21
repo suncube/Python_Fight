@@ -34,3 +34,16 @@ army2.add_members(Orc, 1)
 battle_army = Battle()
 result = battle_army.fight(army1, army2)
 print("Win Army 1" if result else "Win Army 2")
+
+# -----------------
+print("\n*** DRAGON vs Dwarf ***")
+a3 = Army()
+a3.add_members(Dragon, 1)
+
+a4 = Army()
+a4.add_members(Dwarf, 3)
+
+battle_army = Battle()
+result = battle_army.fight(a3, a4)
+
+print("Win Army 3" if result else "Win Army 4")

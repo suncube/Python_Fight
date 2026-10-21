@@ -18,6 +18,11 @@ class Fighter(ABC):
     def is_alive(self) -> bool:
         pass
 
+    @property
+    @abstractmethod
+    def is_can_multi_attack(self) -> bool:
+        pass
+
     @abstractmethod
     def get_attack_damage(self) -> int:
         pass
